@@ -9,8 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const lenis = new Lenis({
   duration: 1.2,
   easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smooth: true,
-  smoothTouch: false,
+  smoothWheel: true,
 });
 
 function raf(time: number) {
@@ -108,6 +107,14 @@ function initNavigation() {
         });
       }
     });
+
+    // Si estamos cerca del pie de página, forzamos 'Contacto' como activo
+    const isBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 10);
+    if (isBottom) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const contactoLink = document.querySelector('a[href="#contacto"]');
+      if (contactoLink) contactoLink.classList.add('active');
+    }
   });
 }
 
